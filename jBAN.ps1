@@ -110,7 +110,7 @@ function jBAN {
 
     #Initial Drives Inspection
     $initialDisks = get-disk
-    $initialVolumes = get-partition | ? {$_.isBoot -ne $true -and $_.type -ne 'system' -and $_.type -ne 'reserved' -and $_.type -ne 'recovery'} | % { get-volume -driveletter $($_.driveletter) }
+    $initialVolumes = get-partition | ? {$_.isBoot -ne $true -and $_.type -ne 'system' -and $_.type -ne 'reserved' -and $_.type -ne 'recovery'} | % { get-volume -driveletter $($_.driveletter) -erroraction silentlycontinue }
     foreach ($iv in $initialVolumes){
         if ($iv.filesystemtype -like "*unknown*" -or $iv.filesystemtype -like "*raw*"){
             write-host ''
@@ -900,7 +900,7 @@ clean all
         if ($fs -eq 'NTFS' -or $fs -eq 'FAT' -or $fs -eq 'exFAT' -or $fs -eq 'FAT32' -or $fs -eq 'ReFS'){
             #if corruptionPass selected
             if ($corruptionPass -like $true -and $fsCount -eq 4){
-                .corruption-Pass
+                . corruption-Pass
             }
 
             write-host ''
